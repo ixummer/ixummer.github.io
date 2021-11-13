@@ -1,0 +1,50 @@
+driver安装，手动官网下载驱动文件安装各种方式都卡在登陆界面。
+使用Ubuntu软件仓库中的稳定版本安装：
+1.ubuntu-drivers devices
+2.ubuntu-drivers autoinstall
+完成后重启即可。
+
+查看系统版本：
+cat /etc/issue
+查看显卡具体型号：
+nvidia-smi -q | grep Product
+
+CUDA报错：
+./cuda-installer: error while loading shared libraries: libxml2.so.2: cannot open shared object file: No such file or directory
+root@rt-res-host1-67f889cfdc-lwxkb:/opt# apt-get install libxml2.so.2
+apt-get install libxml2
+
+配置环境变量：
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.0/lib64
+export PATH=$PATH:/usr/local/cuda-11.0/bin
+export CUDA_HOME=$CUDA_HOME:/usr/local/cuda-11.0
+
+cudnn安装：
+1.Navigate to your <cudnnpath> directory containing the cuDNN tar file.
+2.Unzip the cuDNN package.
+$ tar -xzvf cudnn-x.x-linux-x64-v8.x.x.x.tgz
+or
+
+$ tar -xzvf cudnn-x.x-linux-aarch64sbsa-v8.x.x.x.tgz
+3.Copy the following files into the CUDA Toolkit directory.
+$ sudo cp cuda/include/cudnn*.h /usr/local/cuda/include 
+$ sudo cp -P cuda/lib64/libcudnn* /usr/local/cuda/lib64 
+$ sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
+
+
+
+image：nvidia/cuda:11.0-base-ubuntu18.04
+
+Anaconda创建tensorflow-gpu=2.2.0
+
+conda create -n tf python=3.7
+
+conda activate tf
+
+conda install tensorflow-gpu=2.2.0
+
+python 
+
+import tensorflow as tf 
+tf.test.is_gpu_available()
+tf.config.list_physical_devices('GPU')
