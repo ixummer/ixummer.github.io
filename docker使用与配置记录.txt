@@ -1,0 +1,42 @@
+ubuntu系统：
+	apt-get update
+1.docker安装：（以ubuntu系统为例）
+	官方脚本自动安装：curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+2.镜像加速设置：
+	/etc/docker/daemon.json
+	{
+  	"registry-mirrors": [
+    	"https://dockerhub.azk8s.cn",
+    	"https://reg-mirror.qiniu.com",
+    	"https://registry.docker-cn.com"
+  	]
+	}
+	sudo systemctl daemon-reload
+	sudo systemctl restart docker
+3.拉取镜像：
+	docker pull nvidia/cuda:11.0-base-ubuntu18.04
+4.创建容器：
+	docker run -t -i -d --name zbravery_test(容器名) -p 30030:22（主机端口：容器端口映射）nvidia/cuda(镜像名)
+	docker run -it --name zbravery -v /home/data_:/home -p 30060:22 -p 30061:8888 -p 30062:9999 --shm-size=16g 4b153ec5c1db /bin/bash
+5.进入容器：
+	docker exec -t -i -d zbravery_test /bin/bash
+6.在容器中执行以下命令：
+	apt-get update
+	sudo passwd root(设置新的root密码)
+	apt-get install openssh-server
+	apt-get install vim
+	修改etc/ssh/sshd_config文件后重启ssh
+	etc/init.d/ssh restart
+PS：容器重启后需要重新进入容器启动ssh
+7.完成上述步骤后就可以使用ssh工具远程访问容器，进行进一步配置工作。	
+8.容器快照导出：
+	docker export （容器id）>demo.tar
+   容器快照导入：
+	docker import 文件路径或url
+9.容器的提交为新的镜像：
+	docker commit -m="描述信息" -a="镜像作者" 容器id 目标镜像名称
+	docker images查看是否存在
+10.镜像上传到dockerhub:
+	docker login / logout
+	docker push 镜像名称
+	docker search 镜像名称 
