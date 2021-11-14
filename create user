@@ -1,10 +1,10 @@
-docker run -it -d -p 30064:22 -p 30065:8888 -p 30066:9999 --shm-size=40g  --name lj nvidia/cuda:10.2-base-ubuntu18.04 /bin/bash
-docker exec -it lj /bin/bash
-apt-get update
-apt-get install sudo
-sudo passwd root
-apt-get install openssh-server
-apt-get install vim
-vim etc/ssh/sshd_config     修改UsePAN NO       PermitRootLogin yes
-etc/init.d/ssh restart
-ssh -p 30064 root@10.107.41.170
+docker run --rm --gpus all -it -d -p 30064:22 -p 30065:8888 -p 30066:9999 --shm-size=100g --name lj nvidia/cuda:10.2-base-ubuntu18.04 /bin/bash
+docker exec -it lj /bin/bash     注意：此行和上一行lj改为自己的
+apt-get update 
+apt-get install sudo 
+sudo passwd root 
+apt-get install openssh-server 
+vim etc/ssh/sshd_config （修改UsePAN NO 和 添加PermitRootLogin yes ）
+etc/init.d/ssh restart 
+exit
+ssh -p 30064 root@10.107.41.170 
