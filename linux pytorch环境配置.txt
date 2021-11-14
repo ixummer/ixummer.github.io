@@ -1,0 +1,28 @@
+wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-x86_64.sh
+
+bash Anaconda3-2021.05-Linux-x86_64.sh        一直按enter，然后一直确定
+conda create -n pytorch python=3.6      会报错“conda: command not found”
+解决方法：source ~/.bashrc              然后进入base环境
+
+更换科大源
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/msys2/
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda/
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/menpo/
+conda config --set show_channel_urls yes
+
+
+conda create -n pytorch python=3.6    
+
+conda activate pytorch
+
+cat /usr/local/cuda/version.txt 
+
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+
+python
+import torch
+torch.__version__                   返回'1.10.0'
+torch.cuda.is_available()        返回True
