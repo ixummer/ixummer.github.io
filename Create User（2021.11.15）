@@ -1,0 +1,32 @@
+docker run --gpus all -it -d -p 30061:22 -p 30062:8888 -p 30063:9999 --shm-size=100g --name zxx nvidia/cuda:10.2-base-ubuntu18.04 /bin/bash
+docker exec -it zxx /bin/bash     注意：此行和上一行的容器名zxx和端口号改为自己的
+apt-get update 
+apt-get install sudo 
+sudo passwd root 
+apt-get install openssh-server 
+apt-get install vim
+vim etc/ssh/sshd_config （修改UsePAN NO 和 添加PermitRootLogin yes ）
+etc/init.d/ssh restart 
+exit
+ssh -p 30064 root@10.107.41.170 
+
+在修改docker配置后需要重启docker服务，此时需在宿主机命令提示符下执行
+关闭所有容器：
+	docker stop zxx
+更改镜像源：
+	vim /etc/docker/daemon.json
+然后执行：
+	systemctl daemon-reload
+	systemctl restart docker
+然后启动刚才关闭的容器：
+	docker start zxx
+
+修改中文乱码（进入容器后）
+vim /etc/profile  -> 加上export LANG=C.UTF-8
+vim /root/.bashrc -> 加上source /etc/profile
+
+restart 容器后无法ssh登录
+vim /root/.bashrc -> /etc/init.d/ssh restart
+
+以及停掉容器无法启动ssh
+
